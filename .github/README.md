@@ -1,4 +1,4 @@
-# vela-influx
+# vela-hugo
 
 [![license](https://img.shields.io/crates/l/gl.svg)](../LICENSE)
 [![GoDoc](https://godoc.org/github.com/go-vela/vela-hugo?status.svg)](https://godoc.org/github.com/go-vela/vela-hugo)
