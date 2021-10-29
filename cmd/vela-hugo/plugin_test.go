@@ -11,40 +11,15 @@ import (
 	"testing"
 )
 
-func TestPlugin_Exec(t *testing.T) {
-	tests := []struct {
-		name    string
-		plugin  Plugin
-		wantErr bool
-	}{
-		{
-			name: "should fail - p.Command returns error, no hugo binary found",
-			plugin: Plugin{
-				Build:  &Build{},
-				Config: &Config{},
-				Theme:  &Theme{},
-			},
-			wantErr: true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// run the exec with the test conditions and check if the reponse is expected
-			if err := tt.plugin.Exec(); (err != nil) != tt.wantErr {
-				t.Errorf("Plugin.Exec() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
 func TestPlugin_Command(t *testing.T) {
+	// setup tests
 	tests := []struct {
 		name   string
 		plugin Plugin
 		want   *exec.Cmd
 	}{
 		{
-			name: "should pass - all flags correctly applied",
+			name: "full plugin object with all flags",
 			plugin: Plugin{
 				Build: &Build{
 					BaseURL: "BaseURL",
@@ -53,19 +28,20 @@ func TestPlugin_Command(t *testing.T) {
 					Future:  true,
 				},
 				Config: &Config{
-					CacheDirectory:   "CacheDirectory",
-					ContentDirectory: "ContentDirectory",
-					Directory:        "ConfigDirectory",
-					Environment:      "Environment",
-					File:             "ConfigFile",
-					LayoutDirectory:  "LayoutDirectory",
-					OutputDirectory:  "OutputDirectory",
-					SourceDirectory:  "SourceDirectory",
+					CacheDirectory:   "/cache",
+					ContentDirectory: "/content",
+					Directory:        "/config",
+					Environment:      "dev",
+					File:             "config.toml",
+					LayoutDirectory:  "/layout",
+					OutputDirectory:  "/build",
+					SourceDirectory:  "/source",
 				},
 				Theme: &Theme{
-					Name:      "Name1",
-					Directory: "ThemeDirectory",
-				}},
+					Name:      "docsy",
+					Directory: "themes",
+				},
+			},
 			want: exec.Command(
 				_hugo,
 				fmt.Sprintf("--baseURL=%s", "BaseURL"),
@@ -85,12 +61,49 @@ func TestPlugin_Command(t *testing.T) {
 			),
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// run the hugo plugin with the provided flags
-			if got := tt.plugin.Command(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Plugin.Command() = %v, want %v", got, tt.want)
+
+	// run tests
+	for _, test := range tests {
+		got := test.plugin.Command()
+
+		if !reflect.DeepEqual(got, test.want) {
+			t.Errorf("%s Command is %v, want %v", test.name, got, test.want)
+		}
+	}
+}
+
+func TestPlugin_Exec(t *testing.T) {
+	// setup tests
+	tests := []struct {
+		failure bool
+		name    string
+		plugin  Plugin
+	}{
+		{
+			failure: true,
+			name:    "empty plugin object provided",
+			plugin: Plugin{
+				Build:  &Build{},
+				Config: &Config{},
+				Theme:  &Theme{},
+			},
+		},
+	}
+
+	// run tests
+	for _, test := range tests {
+		err := test.plugin.Exec()
+
+		if test.failure {
+			if err == nil {
+				t.Errorf("%s Exec should have returned err", test.name)
 			}
-		})
+
+			continue
+		}
+
+		if err != nil {
+			t.Errorf("%s Exec returned err: %v", test.name, err)
+		}
 	}
 }

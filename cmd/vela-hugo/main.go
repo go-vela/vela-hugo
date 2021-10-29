@@ -19,6 +19,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
+// nolint: funlen // ignore function length due to flags
 func main() {
 	// capture application version information
 	v := version.New()
@@ -123,20 +124,20 @@ func main() {
 			EnvVars:  []string{"PARAMETER_CONFIG_DIRECTORY", "HUGO_CONFIG_DIRECTORY"},
 			FilePath: "/vela/parameters/hugo/config_directory,/vela/secrets/hugo/config_directory",
 			Name:     "config.directory",
-			Usage:    "config dir",
+			Usage:    "filesystem path to config directory",
 			Value:    "config",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_ENVIRONMENT", "HUGO_ENVIRONMENT"},
 			FilePath: "/vela/parameters/hugo/environment,/vela/secrets/hugo/environment",
 			Name:     "config.environment",
-			Usage:    "build environment, located within the config directory",
+			Usage:    "targeted build environment in config directory",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_CONFIG_FILE", "HUGO_CONFIG_FILE"},
 			FilePath: "/vela/parameters/hugo/config_file,/vela/secrets/hugo/config_file",
 			Name:     "config.file",
-			Usage:    "config file (default is path/config.yaml|json|toml).",
+			Usage:    "name of config file in config directory",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_LAYOUT_DIRECTORY", "HUGO_LAYOUT_DIRECTORY"},
@@ -154,7 +155,7 @@ func main() {
 			EnvVars:  []string{"PARAMETER_SOURCE_DIRECTORY", "HUGO_SOURCE_DIRECTORY"},
 			FilePath: "/vela/parameters/hugo/source_directory,/vela/secrets/hugo/source_directory",
 			Name:     "config.source_directory",
-			Usage:    "filesystem path to read files relative from",
+			Usage:    "filesystem path to read files from",
 		},
 
 		// Theme Flags
@@ -163,13 +164,14 @@ func main() {
 			EnvVars:  []string{"PARAMETER_THEME_NAME", "HUGO_THEME_NAME"},
 			FilePath: "/vela/parameters/hugo/theme_name,/vela/secrets/hugo/theme_name",
 			Name:     "theme.name",
-			Usage:    "the name of the theme to use (default located in /themes/THEMENAME/).",
+			Usage:    "name of theme to use from theme directory",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_THEME_DIRECTORY", "HUGO_THEME_DIRECTORY"},
 			FilePath: "/vela/parameters/hugo/theme_directory,/vela/secrets/hugo/theme_directory",
 			Name:     "theme.directory",
-			Usage:    "filesystem path to themes directory",
+			Usage:    "filesystem path to theme directory",
+			Value:    "themes",
 		},
 	}
 

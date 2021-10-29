@@ -11,9 +11,9 @@ import (
 
 // Theme represents the plugin configuration for what Hugo theme(s) to use.
 type Theme struct {
-	// theme to use (located in /theme/THEMENAME/)
+	// name of theme to use from theme directory
 	Name string
-	// filesystem path to themes directory
+	// filesystem path to theme directory
 	Directory string
 }
 
@@ -26,8 +26,13 @@ func (t *Theme) Validate() error {
 		Fs: appFS,
 	}
 
-	// check if a theme directory is provided
-	if len(t.Directory) > 0 {
+	// check if a theme is provided
+	if len(t.Name) > 0 {
+		// verify theme directory is provided
+		if len(t.Directory) == 0 {
+			return fmt.Errorf("no theme directory provided")
+		}
+
 		// check if theme directory exists
 		_, err := a.Stat(t.Directory)
 		if err != nil {
@@ -35,29 +40,24 @@ func (t *Theme) Validate() error {
 			if os.IsNotExist(err) {
 				return fmt.Errorf("no theme directory found @ %s", t.Directory)
 			}
+
 			return err
 		}
-	}
 
-	// check if a theme is provided
-	if len(t.Name) > 0 {
+		// create path to theme based off directory and name
+		path := filepath.Join(t.Directory, t.Name)
 
-		// the default location for themes
-		path := filepath.Join("themes", t.Name)
-
-		// if a theme directory is provided, use that instead
-		if len(t.Directory) > 0 {
-			path = filepath.Join(t.Directory, t.Name)
-		}
-
-		_, err := a.Stat(path)
+		// check if theme path exists
+		_, err = a.Stat(path)
 		if err != nil {
 			// check if a not exist err was returned
 			if os.IsNotExist(err) {
 				return fmt.Errorf("no theme found @ %s", path)
 			}
+
 			return err
 		}
 	}
+
 	return nil
 }

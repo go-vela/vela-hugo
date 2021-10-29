@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
@@ -10,21 +11,21 @@ import (
 
 // Config represents the plugin configuration for Hugo information.
 type Config struct {
-	// filesystem path to cache directory. Defaults: $TMPDIR/hugo_cache/
+	// filesystem path to cache directory
 	CacheDirectory string
 	// filesystem path to content directory
 	ContentDirectory string
-	// config dir (default "config")
+	// filesystem path to config directory
 	Directory string
-	// build environment
+	// targeted build environment in config directory
 	Environment string
-	// config file (default is path/config.yaml|json|toml)
+	// name of file in config directory
 	File string
 	// filesystem path to layout directory
 	LayoutDirectory string
 	// filesystem path to write files to
 	OutputDirectory string
-	// filesystem path to read files relative from
+	// filesystem path to read files from
 	SourceDirectory string
 }
 
@@ -46,19 +47,40 @@ func (c *Config) Validate() error {
 			if os.IsNotExist(err) {
 				return fmt.Errorf("no cache directory found @ %s", c.CacheDirectory)
 			}
+
 			return err
 		}
 	}
 
 	// check if a config file is provided
 	if len(c.File) > 0 {
-		// validate that the config file exists
-		_, err := a.Stat(c.File)
+		// verify config directory is provided
+		if len(c.Directory) == 0 {
+			return fmt.Errorf("no config directory provided")
+		}
+
+		// check if config directory exists
+		_, err := a.Stat(c.Directory)
 		if err != nil {
 			// check if a not exist err was returned
 			if os.IsNotExist(err) {
-				return fmt.Errorf("no config found @ %s", c.File)
+				return fmt.Errorf("no config directory found @ %s", c.Directory)
 			}
+
+			return err
+		}
+
+		// create path to config based off directory and name
+		path := filepath.Join(c.Directory, c.File)
+
+		// validate that the config file exists
+		_, err = a.Stat(path)
+		if err != nil {
+			// check if a not exist err was returned
+			if os.IsNotExist(err) {
+				return fmt.Errorf("no config found @ %s", path)
+			}
+
 			return err
 		}
 	}
@@ -72,6 +94,7 @@ func (c *Config) Validate() error {
 			if os.IsNotExist(err) {
 				return fmt.Errorf("no content directory found @ %s", c.ContentDirectory)
 			}
+
 			return err
 		}
 	}
@@ -85,6 +108,7 @@ func (c *Config) Validate() error {
 			if os.IsNotExist(err) {
 				return fmt.Errorf("no layout directory found @ %s", c.LayoutDirectory)
 			}
+
 			return err
 		}
 	}
@@ -98,6 +122,7 @@ func (c *Config) Validate() error {
 			if os.IsNotExist(err) {
 				return fmt.Errorf("no source directory found @ %s", c.SourceDirectory)
 			}
+
 			return err
 		}
 	}

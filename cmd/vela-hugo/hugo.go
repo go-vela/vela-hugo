@@ -25,7 +25,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 	// setup vars for building the _download url
 	//   based off of https://github.com/gohugoio/hugo/releases for the naming convention
 	var (
-		binary   string = "hugo"
+		binary   = "hugo"
 		osName   string
 		archType string
 	)

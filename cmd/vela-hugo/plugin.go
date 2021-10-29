@@ -23,25 +23,6 @@ type Plugin struct {
 	Theme *Theme
 }
 
-// Exec formats and runs the commands for the plugin
-func (p *Plugin) Exec() error {
-	logrus.Debug("running plugin with provided configuration")
-
-	// output hugo version for troubleshooting
-	err := execCmd(versionCmd())
-	if err != nil {
-		return err
-	}
-
-	// run the hugo plugin with the provided flags
-	err = execCmd(p.Command())
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (p *Plugin) Command() *exec.Cmd {
 	// variable to store flags for command
 	var flags []string
@@ -132,6 +113,25 @@ func (p *Plugin) Command() *exec.Cmd {
 
 	// run the hugo plugin with the provided flags
 	return exec.Command(_hugo, flags...)
+}
+
+// Exec formats and runs the commands for the plugin.
+func (p *Plugin) Exec() error {
+	logrus.Debug("running plugin with provided configuration")
+
+	// output hugo version for troubleshooting
+	err := execCmd(versionCmd())
+	if err != nil {
+		return err
+	}
+
+	// run the hugo plugin with the provided flags
+	err = execCmd(p.Command())
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (p *Plugin) Validate() error {
