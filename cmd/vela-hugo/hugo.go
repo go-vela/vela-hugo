@@ -1,3 +1,7 @@
+// Copyright (c) 2022 Target Brands, Inc. All rights reserved.
+//
+// Use of this source code is governed by the LICENSE file in this repository.
+
 package main
 
 import (
@@ -68,6 +72,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 
 	if extendedBinary {
 		logrus.Infof("using extended hugo binary")
+
 		binary = "hugo_extended"
 	}
 
