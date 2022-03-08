@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Target Brands, Inc. All rights reserved.
+// Copyright (c) 2022 Target Brands, Inc. All rights reserved.
 //
 // Use of this source code is governed by the LICENSE file in this repository.
 
@@ -42,6 +42,7 @@ func TestPlugin_Command(t *testing.T) {
 					Directory: "themes",
 				},
 			},
+			// nolint: gosec // ignore for testing
 			want: exec.Command(
 				_hugo,
 				fmt.Sprintf("--baseURL=%s", "http://hugo.example.com/"),
