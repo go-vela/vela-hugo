@@ -5,7 +5,7 @@
 # set a global Docker argument for the default CLI version
 #
 # https://github.com/moby/moby/issues/37345
-ARG HUGO_VERSION=0.76.5
+ARG HUGO_VERSION=0.101.0
 
 ##########################################################################
 ##    docker build --no-cache --target binary -t vela-hugo:binary .     ##
