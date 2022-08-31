@@ -88,8 +88,11 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 	// into semantic version struct
 	ver, err := semver.NewVersion(customVer)
 	if err != nil {
-		logrus.Errorf("not a valid version: %s", customVer)
+		return fmt.Errorf("not a valid version: %s", customVer)
 	}
+
+	// allow version usage with and without leading 'v'
+	customVer = strings.TrimPrefix(customVer, "v")
 
 	// let user know that a custom version
 	// was requested
