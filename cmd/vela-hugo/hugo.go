@@ -68,16 +68,6 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 		binary = "hugo_extended"
 	}
 
-	// check if the custom version requested
-	// is the default version
-	isDefaultVersion := strings.EqualFold(customVer, defaultVer)
-
-	// check if the custom version matches the default version and/or the extneded binary is requested
-	if isDefaultVersion && !extendedBinary {
-		// the hugo versions match and using the base hugo binary so no action is required
-		return nil
-	}
-
 	// use default version if no custom version
 	// was requested
 	if len(customVer) == 0 {
@@ -91,18 +81,30 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 		return fmt.Errorf("not a valid version: %s", customVer)
 	}
 
-	// allow version usage with and without leading 'v'
-	customVer = strings.TrimPrefix(customVer, "v")
+	// get the version without leading "v",
+	// if it was supplied
+	verWithoutV := ver.String()
+
+	// check if the custom version requested
+	// is the default version
+	isDefaultVersion := strings.EqualFold(verWithoutV, defaultVer)
+
+	// are we using the included default
+	// (non-extended) version?
+	// if so, no need to download anything
+	if isDefaultVersion && !extendedBinary {
+		return nil
+	}
 
 	// let user know that a custom version
 	// was requested
-	if !isDefaultVersion && len(customVer) > 0 {
-		logrus.Infof("custom version requested (default is: %s): %s", defaultVer, customVer)
+	if !isDefaultVersion {
+		logrus.Infof("custom version requested (default is: %s): %s", defaultVer, ver.String())
 	}
 
 	// special handling for macOS.
 	// starting with 0.102, hugo supplies
-	// a fat universal binary
+	// a "fat" universal binary
 	//
 	// see notes here: https://github.com/gohugoio/hugo/releases/tag/v0.102.0
 	if osName == "macOS" && ver.Minor() > uint64(101) {
@@ -118,7 +120,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 	}
 
 	// create the download URL to install hugo - https://github.com/gohugoio/hugo/releases
-	url := fmt.Sprintf(_download, customVer, binary, customVer, osName, archType)
+	url := fmt.Sprintf(_download, ver.String(), binary, ver.String(), osName, archType)
 
 	logrus.Infof("downloading hugo version from: %s", url)
 	// send the HTTP request to install hugo
