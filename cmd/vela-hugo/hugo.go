@@ -99,7 +99,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 	// let user know that a custom version
 	// was requested
 	if !isDefaultVersion {
-		logrus.Infof("custom version requested (default is: %s): %s", defaultVer, ver.String())
+		logrus.Infof("custom version requested (default is: %s): %s", defaultVer, verWithoutV)
 	}
 
 	// special handling for macOS.
@@ -120,7 +120,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 	}
 
 	// create the download URL to install hugo - https://github.com/gohugoio/hugo/releases
-	url := fmt.Sprintf(_download, ver.String(), binary, ver.String(), osName, archType)
+	url := fmt.Sprintf(_download, verWithoutV, binary, verWithoutV, osName, archType)
 
 	logrus.Infof("downloading hugo version from: %s", url)
 	// send the HTTP request to install hugo
