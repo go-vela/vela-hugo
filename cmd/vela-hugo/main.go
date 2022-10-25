@@ -204,7 +204,7 @@ func run(c *cli.Context) error {
 
 	logrus.WithFields(logrus.Fields{
 		"code":     "https://github.com/go-vela/vela-hugo",
-		"docs":     "https://go-vela.github.io/docs/plugins/registry/hugo",
+		"docs":     "https://go-vela.github.io/docs/plugins/registry/pipeline/hugo",
 		"registry": "https://hub.docker.com/r/target/vela-hugo",
 	}).Info("Vela Hugo Plugin")
 
