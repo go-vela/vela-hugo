@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/hashicorp/go-getter"
+	"github.com/hashicorp/go-getter/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
 )
