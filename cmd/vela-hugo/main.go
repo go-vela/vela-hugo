@@ -1,6 +1,4 @@
-// Copyright (c) 2022 Target Brands, Inc. All rights reserved.
-//
-// Use of this source code is governed by the LICENSE file in this repository.
+// SPDX-License-Identifier: Apache-2.0
 
 package main
 
@@ -40,7 +38,7 @@ func main() {
 	app.Name = "vela-hugo"
 	app.HelpName = "vela-hugo"
 	app.Usage = "Vela Hugo plugin for generating a static website"
-	app.Copyright = "Copyright (c) 2022 Target Brands, Inc. All rights reserved."
+	app.Copyright = "Copyright 2021 Target Brands, Inc. All rights reserved."
 	app.Authors = []*cli.Author{
 		{
 			Name:  "Vela Admins",
