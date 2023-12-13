@@ -40,7 +40,7 @@ func TestPlugin_Command(t *testing.T) {
 					Directory: "themes",
 				},
 			},
-			// nolint: gosec // ignore for testing
+			//nolint:gosec // ignore for testing
 			want: exec.Command(
 				_hugo,
 				fmt.Sprintf("--baseURL=%s", "http://hugo.example.com/"),
