@@ -17,6 +17,7 @@ const (
 	_hugo     = "/bin/hugo"
 	_hugoTmp  = "/bin/download"
 	_download = "https://github.com/gohugoio/hugo/releases/download/v%s/%s_%s_%s-%s.tar.gz"
+	_checksum = "https://github.com/gohugoio/hugo/releases/download/v%s/%s_%s_checksums.txt"
 )
 
 func install(extendedBinary bool, customVer, defaultVer string) error {
@@ -27,35 +28,9 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 
 	// setup vars for building the _download url
 	//   based off of https://github.com/gohugoio/hugo/releases for the naming convention
-	var (
-		binary   = "hugo"
-		osName   string
-		archType string
-	)
-
-	switch runtime.GOOS {
-	case "darwin":
-		osName = "macOS"
-	case "linux":
-		osName = "Linux"
-	case "windows":
-		osName = "Windows"
-	default:
-		osName = "unsupported"
-	}
-
-	switch runtime.GOARCH {
-	case "amd64":
-		archType = "64bit"
-	case "arm64":
-		archType = "arm64"
-	case "arm":
-		archType = "arm"
-	case "386":
-		archType = "32bit"
-	default:
-		archType = "unsupported"
-	}
+	binary := "hugo"
+	osName := runtime.GOOS
+	archType := runtime.GOARCH
 
 	// change the binary file name
 	// if the extended version for Sass/SCSS support
@@ -105,7 +80,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 	// a "fat" universal binary
 	//
 	// see notes here: https://github.com/gohugoio/hugo/releases/tag/v0.102.0
-	if osName == "macOS" && ver.Minor() > uint64(101) {
+	if osName == "darwin" && ver.Minor() > uint64(101) {
 		archType = "universal"
 	}
 
@@ -119,10 +94,12 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 
 	// create the download URL to install hugo - https://github.com/gohugoio/hugo/releases
 	url := fmt.Sprintf(_download, verWithoutV, binary, verWithoutV, osName, archType)
+	checksumURL := fmt.Sprintf(_checksum, verWithoutV, binary, verWithoutV)
+	fullURL := fmt.Sprintf("%s?checksum=file:%s", url, checksumURL)
 
-	logrus.Infof("downloading hugo version from: %s", url)
+	logrus.Infof("downloading hugo version from: %s", fullURL)
 	// send the HTTP request to install hugo
-	err = getter.Get(_hugoTmp, url, []getter.ClientOption{}...)
+	err = getter.Get(_hugoTmp, fullURL, []getter.ClientOption{}...)
 	if err != nil {
 		return err
 	}
