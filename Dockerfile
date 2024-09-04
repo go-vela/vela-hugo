@@ -4,7 +4,7 @@
 #
 # https://github.com/moby/moby/issues/37345
 # renovate: datasource=github-tags depName=gohugoio/hugo extractVersion=^v(?<version>.*)$
-ARG HUGO_VERSION=0.115.4
+ARG HUGO_VERSION=0.134.0
 
 ##########################################################################
 ##    docker build --no-cache --target binary -t vela-hugo:binary .     ##

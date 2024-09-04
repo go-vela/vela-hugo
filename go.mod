@@ -3,7 +3,7 @@ module github.com/go-vela/vela-hugo
 go 1.23.0
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/go-vela/types v0.24.0
 	github.com/hashicorp/go-getter v1.7.6
 	github.com/joho/godotenv v1.5.1
