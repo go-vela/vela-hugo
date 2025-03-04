@@ -1,8 +1,6 @@
 module github.com/go-vela/vela-hugo
 
-go 1.23.5
-
-toolchain go1.24.1
+go 1.23.6
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.1
