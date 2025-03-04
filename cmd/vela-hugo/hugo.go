@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"runtime"
 	"strings"
@@ -99,7 +100,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 
 	logrus.Infof("downloading hugo version from: %s", fullURL)
 	// send the HTTP request to install hugo
-	err = getter.Get(_hugoTmp, fullURL, []getter.ClientOption{}...)
+	_, err = getter.Get(context.Background(), _hugoTmp, fullURL)
 	if err != nil {
 		return err
 	}
