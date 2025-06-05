@@ -30,6 +30,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 	// setup vars for building the _download url
 	//   based off of https://github.com/gohugoio/hugo/releases for the naming convention
 	binary := "hugo"
+	checksum := binary
 	osName := runtime.GOOS
 	archType := runtime.GOARCH
 
@@ -95,7 +96,7 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 
 	// create the download URL to install hugo - https://github.com/gohugoio/hugo/releases
 	url := fmt.Sprintf(_download, verWithoutV, binary, verWithoutV, osName, archType)
-	checksumURL := fmt.Sprintf(_checksum, verWithoutV, binary, verWithoutV)
+	checksumURL := fmt.Sprintf(_checksum, verWithoutV, checksum, verWithoutV)
 	fullURL := fmt.Sprintf("%s?checksum=file:%s", url, checksumURL)
 
 	logrus.Infof("downloading hugo version from: %s", fullURL)
