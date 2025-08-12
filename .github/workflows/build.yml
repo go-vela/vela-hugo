@@ -6,23 +6,26 @@ on:
   pull_request:
   push:
 
+permissions:
+  contents: read
+
 # pipeline to execute
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: clone
-      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+      - name: clone
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
 
-    - name: install go
-      uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
-      with:
-        # use version from go.mod file
-        go-version-file: 'go.mod'
-        cache: true
-        check-latest: true
+      - name: install go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          # use version from go.mod file
+          go-version-file: "go.mod"
+          cache: true
+          check-latest: true
 
-    - name: build
-      run: |
-        make build
+      - name: build
+        run: |
+          make build
