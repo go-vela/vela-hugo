@@ -1,6 +1,6 @@
 module github.com/go-vela/vela-hugo
 
-go 1.23.6
+go 1.24.6
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
@@ -14,7 +14,7 @@ require (
 
 require (
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
@@ -27,6 +27,6 @@ require (
 	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/text v0.27.0 // indirect
 )
