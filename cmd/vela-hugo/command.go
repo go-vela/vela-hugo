@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -29,8 +30,8 @@ func execCmd(e *exec.Cmd) error {
 
 // versionCmd is a helper function to output
 // the client and server version information.
-func versionCmd() *exec.Cmd {
+func versionCmd(ctx context.Context) *exec.Cmd {
 	logrus.Trace("creating hugo version command")
 
-	return exec.Command(_hugo, "version")
+	return exec.CommandContext(ctx, _hugo, "version")
 }

@@ -53,7 +53,7 @@ linters:
     - unparam # reports unused function parameters
     - unused # checks for unused constants, variables, functions and types
     - whitespace # detects leading and trailing whitespace
-    - wsl # forces code to use empty lines
+    - wsl_v5 # forces code to use empty lines
 
   # static list of linters we know golangci can run but we've
   # chosen to leave disabled for now

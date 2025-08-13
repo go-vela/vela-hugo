@@ -15,12 +15,12 @@ func Test_execCmd(t *testing.T) {
 	}{
 		{
 			name:    "should pass - valid command",
-			command: exec.Command("echo", "hello"),
+			command: exec.CommandContext(t.Context(), "echo", "hello"),
 			wantErr: false,
 		},
 		{
 			name:    "should fail - invalid command",
-			command: exec.Command("foobar", "world"),
+			command: exec.CommandContext(t.Context(), "foobar", "world"),
 			wantErr: true,
 		},
 	}

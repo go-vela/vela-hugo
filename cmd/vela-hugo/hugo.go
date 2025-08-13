@@ -21,7 +21,7 @@ const (
 	_checksum = "https://github.com/gohugoio/hugo/releases/download/v%s/%s_%s_checksums.txt"
 )
 
-func install(extendedBinary bool, customVer, defaultVer string) error {
+func install(ctx context.Context, extendedBinary bool, customVer, defaultVer string) error {
 	// use custom filesystem which enables us to test
 	a := &afero.Afero{
 		Fs: appFS,
@@ -100,8 +100,9 @@ func install(extendedBinary bool, customVer, defaultVer string) error {
 	fullURL := fmt.Sprintf("%s?checksum=file:%s", url, checksumURL)
 
 	logrus.Infof("downloading hugo version from: %s", fullURL)
+
 	// send the HTTP request to install hugo
-	_, err = getter.Get(context.Background(), _hugoTmp, fullURL)
+	_, err = getter.Get(ctx, _hugoTmp, fullURL)
 	if err != nil {
 		return err
 	}

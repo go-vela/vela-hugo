@@ -5,7 +5,6 @@ package main
 import (
 	"fmt"
 	"os/exec"
-	"reflect"
 	"testing"
 )
 
@@ -41,7 +40,8 @@ func TestPlugin_Command(t *testing.T) {
 				},
 			},
 			//nolint:gosec // ignore for testing
-			want: exec.Command(
+			want: exec.CommandContext(
+				t.Context(),
 				_hugo,
 				fmt.Sprintf("--baseURL=%s", "http://hugo.example.com/"),
 				"--buildDrafts",
@@ -63,9 +63,9 @@ func TestPlugin_Command(t *testing.T) {
 
 	// run tests
 	for _, test := range tests {
-		got := test.plugin.Command()
+		got := test.plugin.Command(t.Context())
 
-		if !reflect.DeepEqual(got, test.want) {
+		if got.String() != test.want.String() {
 			t.Errorf("%s Command is %v, want %v", test.name, got, test.want)
 		}
 	}
@@ -91,7 +91,7 @@ func TestPlugin_Exec(t *testing.T) {
 
 	// run tests
 	for _, test := range tests {
-		err := test.plugin.Exec()
+		err := test.plugin.Exec(t.Context())
 
 		if test.failure {
 			if err == nil {

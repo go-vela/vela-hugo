@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os/exec"
 
@@ -21,7 +22,7 @@ type Plugin struct {
 	Theme *Theme
 }
 
-func (p *Plugin) Command() *exec.Cmd {
+func (p *Plugin) Command(ctx context.Context) *exec.Cmd {
 	// variable to store flags for command
 	var flags []string
 
@@ -110,21 +111,21 @@ func (p *Plugin) Command() *exec.Cmd {
 	}
 
 	// run the hugo plugin with the provided flags
-	return exec.Command(_hugo, flags...)
+	return exec.CommandContext(ctx, _hugo, flags...)
 }
 
 // Exec formats and runs the commands for the plugin.
-func (p *Plugin) Exec() error {
+func (p *Plugin) Exec(ctx context.Context) error {
 	logrus.Debug("running plugin with provided configuration")
 
 	// output hugo version for troubleshooting
-	err := execCmd(versionCmd())
+	err := execCmd(versionCmd(ctx))
 	if err != nil {
 		return err
 	}
 
 	// run the hugo plugin with the provided flags
-	err = execCmd(p.Command())
+	err = execCmd(p.Command(ctx))
 	if err != nil {
 		return err
 	}
