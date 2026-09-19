@@ -4,13 +4,13 @@
 #
 # https://github.com/moby/moby/issues/37345
 # renovate: datasource=github-tags depName=gohugoio/hugo extractVersion=^v(?<version>.*)$
-ARG HUGO_VERSION=0.157.0
+ARG HUGO_VERSION=0.166.0
 
 ##########################################################################
 ##    docker build --no-cache --target binary -t vela-hugo:binary .     ##
 ##########################################################################
 
-FROM alpine:3.23.3@sha256:25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659 AS binary
+FROM alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 AS binary
 
 ARG HUGO_VERSION
 
@@ -29,7 +29,7 @@ RUN wget -q "${HUGO_RELEASE_URL}/${HUGO_FILENAME}" -O "${HUGO_FILENAME}" && \
 ##    docker build --no-cache -t vela-hugo:local .    ##
 ########################################################
 
-FROM alpine:3.23.3@sha256:25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659
+FROM alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
 
 ARG HUGO_VERSION
 
